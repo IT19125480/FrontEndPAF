@@ -32,11 +32,11 @@
 				    <input id="itemDesc" name="itemDesc" type="text" class="form-control form-control-sm"> 
 				    <br>
 				    Quantity: 
-				    <input id="qty" name="qty" type="text" class="form-control form-control-sm"> 
+				    <input id="Quantity" name="Quantity" type="text" class="form-control form-control-sm"> 
 				    <br> 
-				    <input id="btnSave" name="btnSave" type="button" value="Save"
-						class="btn btn-primary"> <input type="hidden"
-						id="hidItemIDSave" name="hidItemIDSave" value="">
+				    
+				    <input id="btnSave" name="btnSave" type="button" value="Save" class="btn btn-primary"> 
+				    <input type="hidden" id="hidItemIDSave" name="hidItemIDSave" value="">
 				</form>
 				<div id="alertSuccess" class="alert alert-success"></div>
 				<div id="alertError" class="alert alert-danger"></div>

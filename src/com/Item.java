@@ -6,7 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class Item {
+public class Item 
+{
 
 	public Connection connect()
 	{
@@ -28,7 +29,9 @@ public class Item {
 	public String readItem()
 	{
 		String output = "";
-		try {
+		
+		try
+		{
 			Connection con =connect();
 			if(con == null)
 			{
@@ -39,7 +42,7 @@ public class Item {
 		//Prepare the html table to be displayedoutput
 		
 		output = "<table border='1'><tr><th>Item Code</th> <th>Item Name</th><th>Item Price</th>"
-				+ "<th>Item Description</th> <th>Quantity</th><th>Update</th><th>Remove</th></tr>";
+				+ "<th>Item Description</th><th>Quantity</th><th>Update</th><th>Remove</th></tr>";
 		
 		
 		String query = "select * from items";
@@ -47,48 +50,55 @@ public class Item {
 		ResultSet rs = stmt.executeQuery(query);
 		
 		// iterate through the rows in the result set
-					while (rs.next()) {
-						String itemID = Integer.toString(rs.getInt("itemID"));
-						String itemCode = rs.getString("itemCode");
-						String itemName = rs.getString("itemName");
-						String itemPrice = Double.toString(rs.getDouble("itemPrice"));
-						String itemDesc = rs.getString("itemDesc");
-						String Quantity = rs.getString("Quantity");
-						// Add into the html table
-						output += "<tr><td><input id='hidItemIDUpdate' name='hidItemIDUpdate' type='hidden' value='" + itemID
-								+ "'>" + itemCode + "</td>";
-						output += "<td>" + itemName + "</td>";
-						output += "<td>" + itemPrice + "</td>";
-						output += "<td>" + itemDesc + "</td>";
-						output += "<td>" + Quantity + "</td>";
-						// buttons
-						output += "<td><input name='btnUpdate' type='button' value='Update' "
-								+ "class='btnUpdate btn btn-secondary' data-itemid='" + itemID + "'></td>"
-								+ "<td><input name='btnRemove' type='button' value='Remove' "
-								+ "class='btnRemove btn btn-danger' data-itemid='" + itemID + "'></td></tr>";
-					}
-					con.close();
-					// Complete the html table
-					output += "</table>";
-				} catch (Exception e) {
+		while (rs.next()) 
+		{
+				String itemID = Integer.toString(rs.getInt("itemID"));
+				String itemCode = rs.getString("itemCode");
+				String itemName = rs.getString("itemName");
+				String itemPrice = Double.toString(rs.getDouble("itemPrice"));
+				String itemDesc = rs.getString("itemDesc");
+				String Quantity = Integer.toString(rs.getInt("Quantity"));
+				// Add into the html table
+				output += "<tr><td><input id='hidItemIDUpdate' name='hidItemIDUpdate' type='hidden' value='" + itemID
+				+ "'>" + itemCode + "</td>";
+				output += "<td>" + itemName + "</td>";
+				output += "<td>" + itemPrice + "</td>";
+				output += "<td>" + itemDesc + "</td>";
+				output += "<td>" + Quantity + "</td>";
+				// buttons
+				output += "<td><input name='btnUpdate' type='button' value='Update' "
+				+ "class='btnUpdate btn btn-secondary' data-itemid='" + itemID + "'></td>"
+				+ "<td><input name='btnRemove' type='button' value='Remove' "
+				+ "class='btnRemove btn btn-danger' data-itemid='" + itemID + "'></td></tr>";
+		}
+		
+		con.close();
+		// Complete the html table
+		output += "</table>";
+		} 
+		catch (Exception e)
+		{
 					output = "Error while reading the items.";
 					System.err.println(e.getMessage());
-				}
-				return output;
+		}
+		
+		return output;
 	}
 	
 	public String insertItem(String code, String name, String price, String desc , String qty) 
 	{
 		String output = "";
 		
-		try {
+		try 
+		{
 			Connection con = connect();
-			if (con == null) {
+			if (con == null)
+			{
 				return "Error while connecting to the database for inserting.";
 			}
 
 			// create a prepared statement
-			String query = " insert into items (`itemID`,`itemCode`,`itemName`,`itemPrice`,`itemDesc`,'Quantity')"
+			String query = " insert into items (`itemID`,`itemCode`,`itemName`,`itemPrice`,`itemDesc`,Quantity)"
 					+ " values (?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement preparedStmt = con.prepareStatement(query);
@@ -98,23 +108,28 @@ public class Item {
 			preparedStmt.setString(3, name);
 			preparedStmt.setDouble(4, Double.parseDouble(price));
 			preparedStmt.setString(5, desc);
-			preparedStmt.setString(6, qty);
+			preparedStmt.setInt(6, Integer.parseInt(qty));
+			
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
 			String newItems = readItem();
 			output = "{\"status\":\"success\", \"data\": \"" + newItems + "\"}";
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			output = "{\"status\":\"error\", \"data\": \"Error while inserting the item.\"}";
 			System.err.println(e.getMessage());
 		}
 		return output;
 	}
 
-	public String updateItem(String itemID, String code, String name, String price, String desc , String qty)
+	public String updateItem(String ID, String code, String name, String price, String desc , String qty)
 	{
 		String output = "";
-		try {
+		
+		try
+		{
 			Connection con = connect();
 			if (con == null) {
 				return "Error while connecting  to the database for updating.";
@@ -129,8 +144,8 @@ public class Item {
 			preparedStmt.setString(2, name);
 			preparedStmt.setDouble(3, Double.parseDouble(price));
 			preparedStmt.setString(4, desc);
-			preparedStmt.setString(5, qty);
-			preparedStmt.setInt(6, Integer.parseInt(itemID));
+			preparedStmt.setInt(5, Integer.parseInt(qty));
+			preparedStmt.setInt(6, Integer.parseInt(ID));
 			// execute the statement
 			preparedStmt.execute();
 			con.close();
@@ -143,11 +158,15 @@ public class Item {
 		return output;
 	}
 
-	public String deleteItem(String itemID) {
+	public String deleteItem(String itemID)
+	{
 		String output = "";
-		try {
+		
+		try
+		{
 			Connection con = connect();
-			if (con == null) {
+			if (con == null)
+			{
 				return "Error while connecting to the database for deleting.";
 			}
 			// create a prepared statement

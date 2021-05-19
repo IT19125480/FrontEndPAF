@@ -39,8 +39,11 @@ public class ItemsAPI extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String output = itemObj.insertItem(request.getParameter("itemCode"), request.getParameter("itemName"),
-				request.getParameter("itemPrice"), request.getParameter("itemDesc"),request.getParameter("qty"));
+		String output = itemObj.insertItem(request.getParameter("itemCode"), 
+				request.getParameter("itemName"),
+				request.getParameter("itemPrice"), 
+				request.getParameter("itemDesc"),
+				request.getParameter("Quantity"));
 		response.getWriter().write(output);
 	}
 
@@ -52,10 +55,10 @@ public class ItemsAPI extends HttpServlet {
 		 String output = itemObj.updateItem(paras.get("hidItemIDSave").toString(), 
 		 paras.get("itemCode").toString(), 
 		 paras.get("itemName").toString(), 
-		paras.get("itemPrice").toString(), 
-		paras.get("itemDesc").toString(),
-		request.getParameter("qty")); 
-		response.getWriter().write(output); 
+		 paras.get("itemPrice").toString(), 
+		 paras.get("itemDesc").toString(),
+		 paras.get("Quantity").toString()); 
+		 response.getWriter().write(output); 
 	}
 
 	private Map getParasMap(HttpServletRequest request) {
@@ -84,7 +87,7 @@ public class ItemsAPI extends HttpServlet {
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Map paras = getParasMap(request); 
-		 String output = itemObj.deleteItem(paras.get("itemID").toString()); 
+		String output = itemObj.deleteItem(paras.get("itemID").toString()); 
 		response.getWriter().write(output); 
 	}
 
